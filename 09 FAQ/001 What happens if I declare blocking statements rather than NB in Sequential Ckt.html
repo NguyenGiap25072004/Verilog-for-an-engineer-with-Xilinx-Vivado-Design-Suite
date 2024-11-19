@@ -1,0 +1,39 @@
+<p>IEEE recommends usage of the blocking operator for the implementation of the Combinational Circuit in Procedural Statements(always block) while Implementation of Sequential Circuit Strictly needs to be done with the help of the Non-blocking Operator.</p><p>The prominent reason for strictly the following rule is to avoid Race around conditions and implement an intended circuit with HDL.</p><p>Race around conditions refers to the scenario where we have multiple always blocks with the desired logic being added to it. so with the blocking operator, one of the always block will get precedence compare to another always block and then predicting the resulting circuit behavior is difficult or impossible in most cases. This is referred to as Race around Condition.</p><p> if you just follow the guidelines specified by IEEE in almost all the case you will able to eliminate race around conditions,</p><p>1) Use blocking for Combinational Circuit</p><p>2) Use Non-Blocking for Sequential Circuit</p><p>3) Do not mix Blocking and Non-blocking </p><p>4) Prefer Non-blocking wherever you wish to mix blocking and Non-blocking</p><p><br></p><p>Just to demonstrate how using the blocking operator in the Sequential circuit effect implementation of correct functionality we will consider a 4-bit Shift Register.</p><figure><img src="https://img-c.udemycdn.com/redactor/raw/q_and_a/2021-05-19_06-53-30-87f830ff1a206dd6781962d31eeb4c77.PNG"></figure><p><br></p><p><strong>A)&nbsp;The implementation of a shift register with Non-blocking operator is as follow:</strong></p><p><br></p><pre class="prettyprint linenums">module shift_register(
+input clk,start,
+output [3:0] d
+);
+
+reg [3:0] dout = 4'b0001;
+
+always@(posedge clk)
+begin
+if(start == 1'b1) begin
+dout[3] &lt;= dout[0];
+dout[2] &lt;= dout[3];
+dout[1] &lt;= dout[2];
+dout[0] &lt;= dout[1];
+end
+end
+
+assign d = dout;
+
+endmodule</pre><p><strong>Result of Behavioral Simulation:</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/q_and_a/2021-05-19_06-47-17-4c43ea3dcedf631871916241c5cd7a94.PNG"></figure><p><strong>So here we can get correct output as expected (1 -&gt; 2 -&gt; 4-&gt; 8)</strong></p><p><br></p><p><strong>B)&nbsp;The implementation of a shift register with Blocking operator is as follow:</strong></p><p><br></p><pre class="prettyprint linenums">module shift_register(
+input clk,start,
+output [3:0] d
+);
+
+reg [3:0] dout = 4'b0001;
+
+always@(posedge clk)
+begin
+if(start == 1'b1) begin
+dout[3] = dout[0];
+dout[2] = dout[3];
+dout[1] = dout[2];
+dout[0] = dout[1];
+end
+end
+
+assign d = dout;
+
+endmodule</pre><p><strong>Result of Behavioral Simulation:</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/q_and_a/2021-05-19_06-52-10-91c760e8dd3597927876c78f30343c5b.PNG"></figure><p>Here we are getting output always f, which is clearly not what we expected.</p><p><br></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/q_and_a/2021-05-19_07-01-39-4731fdedd1a7746370fb97c6efa657df.PNG"></figure><p><br></p>

@@ -1,0 +1,27 @@
+<pre class="prettyprint linenums">`timescale 1ns / 1ps
+
+
+module top(
+input [3:0] a
+);
+
+///initial always
+reg [3:0] temp;
+reg [3:0] d1,d2;
+
+/*
+initial begin
+d1 = temp;
+d2 = a;
+end
+*/
+
+
+always@(temp,a)
+begin
+d1 = temp;
+d2 = a;
+end
+
+endmodule
+</pre>

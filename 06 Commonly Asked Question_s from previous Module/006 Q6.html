@@ -1,0 +1,73 @@
+<p>Are the integers, real and time datatypes uses flip flops to store corresponding values of variables in the fpga? Also whats the difference between reg and integers? Where does reg and integers are stored in fpga?<strong> (Amaresh Mandal)</strong></p><p><strong>Solution :</strong></p><p><strong>A)&nbsp;Query related to Integer</strong></p><p>Integer data types are used for temporary numerical calculations so for e.g. we are required to generate a delay of 1 sec from the 10 nsec clock, in this case, we require a temporary variable to keep track of the iteration count. Integer variables are used for this purpose since they have a default size of 32-bit hence numerical calculations can be easily achieved with their help. </p><p><br></p><pre class="prettyprint linenums">integer count = 0;
+always@(posedge clk)
+begin
+if(count &lt; 1_00_000) 
+count &lt;= count + 1;
+else begin
+count &lt;= 0;
+dout &lt;= ~dout;
+end
+end</pre><p>E.G. Typical use of Integer datatypes to create big delays.</p><p>You can infact use them to create counters but they lead to the addition of extra circuitry to handle the truncation(conversion of the 32-bit to the desired counter output bits). Here is an example</p><pre class="prettyprint linenums">`timescale 1ns / 1ps
+
+module top( 
+input start,clk,
+output [3:0] dout
+);
+
+
+integer temp;
+
+always@(posedge clk)
+begin
+if(start == 1'b0)
+temp &lt;= 0;
+else begin
+if(temp &lt; 16)
+temp &lt;= temp + 1;
+else
+temp &lt;= 0;
+end
+end
+assign dout = temp;
+endmodule
+</pre><p><strong>Implemented Circuit :</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/q_and_a/2021-05-24_08-55-52-33e7d119597ed06f4d784d6472defcb2.PNG"></figure><p><strong>Code with reg datatypes:</strong></p><p><br></p><pre class="prettyprint linenums">module top( 
+input start,clk,
+output [3:0] dout
+);
+
+
+reg [3:0] temp;
+
+always@(posedge clk)
+begin
+if(start == 1'b0)
+temp &lt;= 0;
+else begin
+if(temp &lt; 16)
+temp &lt;= temp + 1;
+else
+temp &lt;= 0;
+end
+end
+assign dout = temp;
+endmodule
+</pre><p> </p><figure><img src="https://img-c.udemycdn.com/redactor/raw/q_and_a/2021-05-24_08-56-22-a74a4ca7bf1c4f34181cd44997366025.PNG"></figure><p><br></p><p><strong>B) Query related to reg</strong></p><p>reg is basic datatypes in procedural assignment statements so they will lead to the creation of the Flipflops or Registers if used in the implementation of the Sequential Circuit but won't create Flipflops if used to implement Combinational Circuits.</p><p><br></p><p><strong>Implementation of Combinational Circuit with reg:</strong></p><pre class="prettyprint linenums">module top( 
+input a,b,
+output reg dout
+);
+
+
+assign dout = a &amp; b;
+endmodule
+</pre><p><br></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/q_and_a/2021-05-24_09-03-40-6ce779fb96c5dd4167739c417e2a22db.PNG"></figure><p><br></p><p><br></p><p><strong>Implementation of the Sequential Circuit with reg:</strong></p><pre class="prettyprint linenums">module top( 
+input din,clk,
+output reg dout
+);
+
+
+always@(posedge clk)
+begin
+dout &lt;= din;
+end
+endmodule
+</pre><figure><img src="https://img-c.udemycdn.com/redactor/raw/q_and_a/2021-05-24_09-02-27-410e8ffc6f648d05de34fde20003a22d.PNG"></figure><p><strong>C)&nbsp;Query related to real and time datatype</strong></p><p>real datatype is used to store 64-bit floating-point numbers whereas time datatype is used to keep track of the simulation time. </p><p>integer is synthesizable but real is not synthesizable in Verilog.</p><p> time datatype is also not synthesizable and used mainly in the testbench to keep track of the Simulation time.</p>

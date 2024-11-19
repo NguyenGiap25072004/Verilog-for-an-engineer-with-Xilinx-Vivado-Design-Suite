@@ -1,0 +1,28 @@
+<pre class="prettyprint linenums">module tb;
+
+reg [3:0] a = 4'h3,b = 4'h6;///blocking
+
+reg [3:0] c = 4'h3,d = 4'h6;//non-blocking
+
+//////////////////Blocking
+reg [3:0] temp;
+initial begin
+temp = a;
+a = b;
+b = temp;
+#1;
+$display("a : %0d and b :%0d", a,b);
+end
+
+
+///////////////Non-blocking
+initial begin
+c &lt;= d;
+d &lt;= c;
+#1;
+$display("c : %0d and d :%0d", c,d);
+end
+
+
+endmodule
+</pre>

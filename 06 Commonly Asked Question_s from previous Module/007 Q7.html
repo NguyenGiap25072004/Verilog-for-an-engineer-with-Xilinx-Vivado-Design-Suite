@@ -1,0 +1,53 @@
+<p><strong>Q . What are possible values of == operator does it include x or not other than 0,1 if === are there we can expect z,x as output.</strong></p><p><strong>( NV Sai Bhaskar)</strong></p><p><br></p><p>Sol.</p><p>In Verilog, reg datatype could take 4 different values such as 0,1, X and Z.</p><p>1)&nbsp;== operator work perfectly to compare variable with 0 and 1 values but do not work with X and z values.</p><p><br></p><p><strong>CASE 1:&nbsp;Number match</strong></p><p><br></p><pre class="prettyprint linenums">module tb();
+  
+  reg [1:0] a = 2'b11;
+  
+  
+  initial begin
+    if(a == 2'b11)
+      $display("Number Match");
+    else
+      $display("Number do no match");
+    end
+  
+endmodule</pre><figure><img src="https://img-c.udemycdn.com/redactor/raw/q_and_a/2021-05-31_11-36-11-79c0800fbf8689f0674b99bffb817138.PNG"></figure><p><br></p><p><strong>CASE 2:&nbsp;Number Mismatch</strong></p><pre class="prettyprint linenums">module tb();
+  
+  reg [1:0] a = 2'b10;
+  
+  
+  initial begin
+    if(a == 2'b11)
+      $display("Number Match");
+    else
+      $display("Number do no match");
+    end
+  
+endmodule</pre><p><br></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/q_and_a/2021-05-31_11-35-31-0eb0835ef3f98b87d1d8daa57dbd1476.PNG"></figure><p><br></p><p>CASE 3: When we feed X or Z value it will always show Number Mismatch as == operator are in capable of performing a comparison with X and Z value. Assume due to initialization we set a to 1x and have specified one of the state as 1x still equality operator won't able to compare. Observe the example mentioned below.</p><p><br></p><pre class="prettyprint linenums">module tb();
+  
+  reg [1:0] a = 2'b1x;  
+  
+  
+  initial begin
+    if(a == 2'b11)
+      $display("Number Match");
+    else if (a == 2'b1x) ///we have feed valid value matching to a (1x) but still it will show can't compare
+      $display("One Initialized Value");
+    else
+      $display("Can't Compare");
+    end
+  
+endmodule</pre><p><br></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/q_and_a/2021-05-31_11-43-50-9d0b73a225e2f9b626eab1454351cee4.PNG"></figure><p><br></p><p>CASE 4: === will perfectly able to compare x and z values.</p><pre class="prettyprint linenums">module tb();
+
+  reg [1:0] a = 2'b1x;  
+  
+  
+  initial begin
+    if(a === 2'b11)
+      $display("Number Match");
+    else if (a === 2'b1x) 
+      $display("One Initialized Value");
+    else
+      $display("Can't Compare");
+    end
+  
+endmodule</pre><p><br></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/q_and_a/2021-05-31_11-45-44-81eef840d28638ee3cb4b7e6bc796480.PNG"></figure><p><br></p><p><br></p><p><br></p><p><br></p>

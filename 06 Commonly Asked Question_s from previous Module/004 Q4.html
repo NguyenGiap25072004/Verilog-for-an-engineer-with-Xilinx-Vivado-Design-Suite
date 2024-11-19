@@ -1,0 +1,25 @@
+<p>What is the difference between ' reg [3:0] a ' and ' reg a[3:0] '&nbsp; (Arvind Kumar)</p><p>Answer :</p><p><strong>A) Packed Array </strong>: When you declare size of the array before variable name (reg [3:0] a), it is termed as Packed array in SystemVerilog.&nbsp; The packed array represent continuous set of bits or data.</p><pre class="prettyprint linenums">module tb;
+  reg [3:0]a = 4;
+  
+initial begin
+  $display("The Value %0d",a);
+end
+  
+endmodule</pre><figure><img src="https://img-c.udemycdn.com/redactor/raw/2020-08-06_20-12-22-c947267adf6718d49d73df41a5030889.JPG"></figure><p><br></p><p><strong>B)&nbsp; Unpacked array: </strong>When you declare dimension after the variable name, it is termed as Unpacked array in SystemVerilog. It is way of specifying collection of the distinct elements.</p><p><strong>Example with Unpacked Array :</strong></p><p><strong>Valid Operation :</strong></p><pre class="prettyprint linenums">module tb;
+  reg a [3:0]= {1,1,1,0};
+  
+initial begin
+  $display("The Value %0d",a[3]);
+  $display("The Value %0d",a[2]);
+  $display("The Value %0d",a[1]);
+  $display("The Value %0d",a[0]); 
+end
+endmodule
+</pre><figure><img src="https://img-c.udemycdn.com/redactor/raw/2020-08-06_20-04-19-1bed9c9442111b83cc3a36b6081dc8ce.JPG"></figure><p><strong>Invalid Operation:</strong></p><pre class="prettyprint linenums">module tb;
+  reg a [3:0]= {1,1,1,0};
+  
+initial begin
+  $display("The Value %0d",a);
+end
+  
+endmodule</pre><figure><img src="https://img-c.udemycdn.com/redactor/raw/2020-08-06_20-05-50-462f86a63ebf898e1c26016509650a0e.JPG"></figure><p><br></p>

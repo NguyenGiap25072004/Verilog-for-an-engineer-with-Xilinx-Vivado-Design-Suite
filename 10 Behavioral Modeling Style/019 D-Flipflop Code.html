@@ -1,0 +1,14 @@
+<pre class="prettyprint linenums">module dff 
+(
+input clk, din,
+output reg q, qbar
+);
+
+always@(posedge clk)
+begin
+q    &lt;= din;
+qbar &lt;= ~din;
+end
+
+
+endmodule</pre>

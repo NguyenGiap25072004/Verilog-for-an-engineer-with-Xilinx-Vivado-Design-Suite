@@ -1,0 +1,19 @@
+<pre class="prettyprint linenums">module tb;
+
+reg b = 0;
+reg a = 1;
+
+wire y;
+reg w; 
+
+
+assign y = a &amp; b;
+
+always@(a,b)
+begin
+w = a &amp; b;
+end
+
+
+endmodule
+</pre>

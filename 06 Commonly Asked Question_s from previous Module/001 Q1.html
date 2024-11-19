@@ -1,0 +1,64 @@
+<p><strong>Q ) What is the difference between logical right shift (i.e &gt;&gt;) and arithmatic right shift (i.e &gt;&gt;&gt;)? (Arvind Kumar)</strong></p><p>A )Logical Left and Arithmetic Left shift show no difference in the result.</p><p>B) Whereas if we consider Right shift logical it add zero at MSB&nbsp;while shifting rest of the bit to left&nbsp;resulting in the result divided by 2. Observe the code and result&nbsp; in the snapshot attach below.</p><p><br></p><pre class="prettyprint linenums">module tb;
+  reg  [7:0] din;
+  
+  initial begin
+    din = 8'b10000000;  //Original Value = 128 
+  end
+  
+  always begin
+  din = din &gt;&gt; 1;
+        #10 ;
+  din = din &gt;&gt; 1;
+        #10 ;
+  din = din &gt;&gt; 1;
+    #10 $stop;
+    
+  end
+  
+  initial begin
+    $monitor("The value after shifting is %0d",din); 
+  end
+  
+endmodule</pre><p><br></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/2020-08-01_12-54-25-8107f5627ce12552f7a517b9904e0b3f.PNG"></figure><p><br></p><p>C) For unsigned data, This works pretty much perfect but for Signed data if we declare reg signed [7:0] din; we loose signed bit.</p><pre class="prettyprint linenums">module tb;
+  reg signed [7:0] din;
+  
+  initial begin
+    din = 8'b10000000;  //Original Value = 128 
+  end
+  
+  always begin
+  din = din &gt;&gt; 1;
+        #10 ;
+  din = din &gt;&gt; 1;
+        #10 ;
+  din = din &gt;&gt; 1;
+    #10 $stop;
+    
+  end
+  
+  initial begin
+    $monitor("The value after shifting is %0d",din); 
+  end
+  
+endmodule</pre><figure><img src="https://img-c.udemycdn.com/redactor/raw/2020-08-01_13-00-46-777a1048f2e57b27000a087085995e3e.PNG"></figure><p>D) Now Observe the same operation by conisdering Right Arithmetic Shift.</p><pre class="prettyprint linenums">module tb;
+  reg signed [7:0] din;
+  
+  initial begin
+    din = 8'b10000000;  //Original Value = 128 
+  end
+  
+  always begin
+  din = din &gt;&gt;&gt; 1;
+        #10 ;
+  din = din &gt;&gt;&gt; 1;
+        #10 ;
+  din = din &gt;&gt;&gt; 1;
+    #10 $stop;
+    
+  end
+  
+  initial begin
+    $monitor("The value after shifting is %0d",din); 
+  end
+  
+endmodule</pre><p><br></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/2020-08-01_12-59-01-e05b4c0fb9c97398b0a016d1fe7807d8.PNG"></figure><p><br></p><p><br></p>

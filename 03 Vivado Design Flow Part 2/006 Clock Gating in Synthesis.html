@@ -1,0 +1,42 @@
+<p>Gate Cloking is a standard way of reducing the power by controlling when to turn on the device when required. Let us try to understand how we add a Clocking gate without modifying the Design using Synthesis Setting strategies and Synthesis constructs.</p><p>Let us understand this with an example.</p><pre class="prettyprint linenums">module dff(
+    input clk, din,
+    output reg dout
+    );
+always@(posedge clk)
+begin
+dout &lt;= din;
+end  
+endmodule
+
+module top(clk, a, din, dout);
+input clk, a,din;
+output  dout;
+
+wire t1;
+
+assign t1 = a &amp; clk;
+dff d1 (t1,din,dout);
+
+
+endmodule</pre><p><strong>Code 1:&nbsp;RTL&nbsp;of Gated and Register</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2021-06-10_16-55-16-8e074e21babedf2fa92c99f27224478d.PNG"></figure><p><strong><em>Fig. 1: RTL&nbsp;Schematic Gating a clock with an AND gate</em></strong></p><p><br></p><p>In Fig. 1, when the "a" signal is set to a low condition, the registers are all turned off and are not drawing dynamic power.</p><p>This technique is not native to the FPGA&nbsp;and also not recommended since to deliever clock sign al FPGA&nbsp;use dedicated clocking paths. So adding Gate add clock skew and can seriously interfere with the Clocking resources. So we strictly avoid such strategy to save dynamic power.</p><p>After Performing Synthesis, HDL&nbsp;code will be translated to the following Circuit.</p><p><br></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2021-06-10_18-41-20-329037e365d889d35c7973036b53b1db.PNG"></figure><p><strong><em>Fig. 2: LUT inside the clocking structure</em></strong></p><p><br></p><p>Now we could clearly see the LUT is added in the Clocking path which is not desirable. So When we add multiple such Gated logic in the design finding them and replacing them in the complex design is an ardous task.</p><p>One strategy we could adopt here as we recognize the problem is to remove all the gate and connect the gating signal (a) to the Clock Enable pin of the Register. Considering the simple rtl mentioned above the process is very simple but with the complex design removing all the gates and connecting the gating signal can lead to significant changes to the design.</p><p><br></p><p>Let us try to understand how Vivado automatically handle this process for us.</p><p>Go to Settings -&gt; Synthesis -&gt; Enable gated_clock_conversion</p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2021-06-10_18-54-58-8eb474c7b2bf8d43002621d504b3c2fb.png"></figure><p><strong><em>Fig. 3: Synthesis Settings</em></strong></p><p><br></p><p>After you turn on gated_Clock_conversion in the synthesis settings. The next step is to specify the clock in the constraints by creating a new constraint file and add the code mentioned below.</p><pre class="prettyprint linenums">create_clock -period 5 [get_ports clk]  
+</pre><p><strong>Code 2:&nbsp;top.xdc </strong></p><p>The final step is to modify the code to include a synthesis directive to perform a gated clock.</p><p><br></p><pre class="prettyprint linenums">module dff(
+    input clk, din,
+    output reg dout
+    );
+always@(posedge clk)
+begin
+dout &lt;= din;
+end  
+endmodule
+
+module top(clk, a, din, dout);
+input a,din;
+output  dout;
+(* gated_clock = "yes" *)input clk;  
+wire t1;
+
+assign t1 = a &amp; clk;
+dff d1 (t1,din,dout);
+
+
+endmodule</pre><p><strong>Code 3:&nbsp;RTL&nbsp;code with Synthesis contraint added.</strong></p><p>Now after all the necessary updates, we can just perform Synthesis again and suprisingly we could observe gating signal being directed to CE.<img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2021-06-10_19-00-05-b8ad468bde8354b21aafe4427508be66.PNG"></p><p> </p><p><strong><em>Fig. 4: Synthesized Schematic after updates</em></strong></p><p><br></p><p><br></p>

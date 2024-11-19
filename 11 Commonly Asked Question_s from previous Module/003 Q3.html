@@ -1,0 +1,15 @@
+<p><strong>Q ) In up/down counter ,taking up counter-&gt; In waveform counting from 1,2,3....,e,f . Output again goes to zero in next count , but how counting again starts from zero,In the code nothing is given about reset to zero once counted to maximum value in 4-bit? (Arvind Kumar)</strong></p><p>code is-&gt;</p><p><br></p><pre class="prettyprint linenums">&nbsp;module counter(input clk,mode,clken,&nbsp; output [3:0] dout);&nbsp;
+ &nbsp;reg [3:0]temp=0;
+&nbsp; &nbsp;always@(posedge clk) begin
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if(clken == 1'b1) begin
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(mode==1'b1)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; temp&lt;=temp+1;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; else
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;temp&lt;=temp-1;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;end&nbsp; &nbsp;
+ &nbsp; &nbsp; &nbsp; &nbsp;else &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            temp&lt;=4'bxxxx;&nbsp;
+          end   
+assign dout =temp;
+endmodule
+</pre><p><strong>Answer :</strong></p><p>For the 4-bit case, we can go maximum up to "1111". so if we try to increment further after reaching the largest value(1111 in our case), the result will become "10000". However, since our variable can store maximum 4-bits, all the MSB bits will be ignored or truncated. Hence we able to see the count again reaching 0000 after 1111.</p><p>The takeaway is we cannot store a number whose size is greater than the largest storing capacity of Variable and if we try to do so will result in truncation.</p>

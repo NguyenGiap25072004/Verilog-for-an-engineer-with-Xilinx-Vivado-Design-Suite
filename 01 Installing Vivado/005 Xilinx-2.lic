@@ -1,0 +1,29 @@
+# ----- REMOVE LINES ABOVE HERE --------------------------
+#
+# This license is valid from Tue Feb 16 17:15:43 UTC 2021.
+#
+# This is license NODELOCKED to HOSTID=ANY;
+# there is no need to run lmgrd for this license.
+#
+#
+# This is a permanent license generated on Tue Feb 16 17:15:43 UTC 2021
+INCREMENT SDK xilinxd 2022.02 permanent uncounted 14D011EB26E4 \
+VENDOR_STRING=kumarkhandagle33@gmail.com,SDK,software,permanent,_211066376_1777522454_0_808 \
+HOSTID=ANY ISSUER="Xilinx Inc" START=16-Feb-2021 TS_OK
+#
+# This is a permanent license generated on Tue Feb 16 17:15:43 UTC 2021
+INCREMENT Analyzer xilinxd 2022.02 permanent uncounted 2BB1F8E671C4 \
+VENDOR_STRING=kumarkhandagle33@gmail.com,Analyzer,software,permanent,_211066376_1777522454_0_063 \
+HOSTID=ANY ISSUER="Xilinx Inc" START=16-Feb-2021 TS_OK
+#
+# This is a permanent license generated on Tue Feb 16 17:15:43 UTC 2021
+INCREMENT HLS xilinxd 2022.02 permanent uncounted CF41B2189634 \
+VENDOR_STRING=kumarkhandagle33@gmail.com,HLS,software,permanent,_211066376_1777522454_0_904 \
+HOSTID=ANY ISSUER="Xilinx Inc" START=16-Feb-2021 TS_OK
+#
+# This is a permanent license generated on Tue Feb 16 17:15:43 UTC 2021
+INCREMENT V_WebPACK xilinxd 2022.02 permanent uncounted B88FD0EC1065 \
+VENDOR_STRING=kumarkhandagle33@gmail.com,V_WebPACK,software,permanent,_211066376_1777522454_0_208 \
+HOSTID=ANY ISSUER="Xilinx Inc" START=16-Feb-2021 TS_OK
+#
+# ----- REMOVE LINES BELOW HERE --------------------------
